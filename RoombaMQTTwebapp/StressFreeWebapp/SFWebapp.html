@@ -39,7 +39,7 @@ body, html {
 
 /* Turn off parallax scrolling for tablets and phones */
 @media only screen and (max-device-width: 1024px) {
-    .bgimg-1, .bgimg-2, .bgimg-3 {
+    .bgimg-1, .bgimg-2 {
         background-attachment: scroll;
     }
 }
@@ -95,19 +95,19 @@ body, html {
 <div class="w3-row w3-center w3-dark-grey w3-padding-16">
   <div class="w3-quarter w3-section">
     <span class="w3-xlarge">4</span><br>
-    Group Members
+	<a data-pjax="" href="https://github.com/StressFreeIOT/Roomba-IOT/graphs/contributors">Members</a>
   </div>
   <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">55+</span><br>
-    Projects Done
+    <span class="w3-xlarge">60+</span><br>
+	<a data-pjax="" href="https://github.com/StressFreeIOT/Roomba-IOT/commits/master">Commits</a>
   </div>
   <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">89+</span><br>
-    Happy Clients
+    <span class="w3-xlarge">9</span><br>
+	<a data-pjax="" href="https://github.com/StressFreeIOT/Roomba-IOT">(Sub)Directories</a>
   </div>
   <div class="w3-quarter w3-section">
-    <span class="w3-xlarge">150+</span><br>
-    Meetings
+    <span class="w3-xlarge">1</span><br>
+	<a data-pjax="" href="https://github.com/StressFreeIOT/Roomba-IOT/branches">Branches</a>
   </div>
 </div>
 
@@ -124,12 +124,14 @@ body, html {
          <div class="w3-container">
             <input class="w3-input" type="text" placeholder="WebSocket MQTT Broker URL"><br>
          </div>
-         <div class="w3-container">     
+	<div class ="w3-cell-row">
+         <div class="w3-container w3-cell">     
 			<input class="w3-input" type="text" placeholder="MQTT Client ID"><br>
+		 </div>
+		 <div class="w3-container w3-cell">  
 			<input type="button" class="w3-button w3-black" value="Connect" id="btn_Connect_to_Broker" onclick="mqtt_Connect_with_Broker();">
-			
-         </div>
-
+		 </div>
+    </div>
          <div class="w3-container">
             <input class="w3-input" type="text" placeholder="MQTT topic root"><br>
          </div>
