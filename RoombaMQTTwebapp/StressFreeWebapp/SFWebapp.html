@@ -14,6 +14,8 @@ body, html {
     line-height: 1.8;
 }
 
+hr { background-color: red; height: 1px; border: 0; }
+
 /* Create a Parallax Effect */
 .bgimg-1, .bgimg-2, .bgimg-3 {
     background-attachment: fixed;
@@ -44,7 +46,7 @@ body, html {
     }
 }
 </style>
-<body>
+<body onload="initVars();">
 
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
@@ -118,9 +120,68 @@ body, html {
   </div>
 </div>
 
-<!-- Container (Control Section) -->
-<div class="w3-content w3-container w3-padding-64" id="control">
-  <h3 class="w3-center">Roomba control</h3>
+<!--Tab menu-->
+<div class="w3-bar w3-black">
+  <button class="w3-bar-item w3-button" onclick="openTab('Leds')">Leds</button>
+  <button class="w3-bar-item w3-button" onclick="openTab('Pubsub')">Pubsub</button>
+  <button class="w3-bar-item w3-button" onclick="openTab('TBD')">TBD</button>
+</div>
+
+<!-- Container (Control) -->
+<!--Leds-->
+<div id = 'Leds' class="w3-content w3-container Tab w3-padding-64">
+  <h3 class="w3-center">Leds and Sensors</h3>
+         <div class="w3-container">
+            <input class="w3-input" type="text" placeholder="WebSocket MQTT Broker URL" id = "txt_MQTT_Broker_URL"><br>
+         </div>
+	<div class ="w3-cell-row">
+         <div class="w3-container w3-cell">     
+			<input class="w3-input" type="text" placeholder="MQTT Client ID" id="txt_MQTT_Client_ID"><br>
+		 </div>
+		 <div class="w3-container w3-cell">  
+			<input type="button" class="w3-button w3-black" value="Connect" id="btn_Connect_to_Broker" onclick="mqtt_Connect_with_Broker();">
+		 </div>
+    </div>
+         <div class="w3-container">
+            <input class="w3-input" type="text" placeholder="MQTT topic root" id="txt_MQTT_topicroot"><br>
+         </div>
+		 
+		 <section id="pubsub" class="panel-body">
+         <h2>Publishing and subscribing</h2>
+         <p>
+            <input disabled type="button" class="btn btn-success" id="button1on" onclick='led("green", "1");' value=" on  " />
+            <input type="button" class="btn btn-danger" disabled id="button1off" onclick='led("green", "0");' value=" off " /> &rarr; Broker &rarr;
+            <font id="ledgreenO" size='6' bgcolor='grey' color='green'><b> O </b></font>
+            &nbsp; &nbsp; Round-trip time = <span id="rtt1"></span> msec
+         </p>
+         <p>
+            <input type="button" class="btn btn-success" id="button2on" onclick='led("yellow", "1");' value=" on  " />
+            <input type="button" class="btn btn-danger" id="button2off" onclick='led("yellow", "0");' value=" off " /> &rarr; Broker &rarr;
+            <font id="ledyellowO" size='6' bgcolor='grey' color='yellow'><b> O </b></font>
+            &nbsp; &nbsp; Round-trip time = <span id="rtt2"></span> msec
+         </p>
+         <p>
+            <input type="button" class="btn btn-success" id="button3on" onclick='led("red", "1");' value=" on " />
+            <input type="button" class="btn btn-danger" id="button3off" onclick='led("red", "0");' value=" off " /> &rarr; Broker &rarr;
+            <font id="ledredO" size='6' bgcolor='grey' color='red'><b> O </b></font>
+            &nbsp; &nbsp; Round-trip time = <span id="rtt3"></span> msec
+         </p>
+         <p>
+            Broker &rarr; Temperature = &nbsp;
+            <textarea name="outputArea1" id="outputArea1" rows=1 cols=10 style="resize:none" onClick="this.select();" readonly="yes">???</textarea>
+         </p>
+         <p>
+            Broker &rarr; &nbsp; &nbsp; &nbsp; Humidity = &nbsp;
+            <textarea name="outputArea2" id="outputArea2" rows=1 cols=10 style="resize:none" onClick="this.select();" readonly="yes">???</textarea>
+         </p>
+      </section>
+</div>
+
+
+
+<!--Pubsuh-->
+<div id = 'Pubsub' class="w3-content w3-container Tab w3-padding-64">
+  <h3 class="w3-center">Pubsub</h3>
          <div class="w3-container">
             <input class="w3-input" type="text" placeholder="WebSocket MQTT Broker URL"><br>
          </div>
@@ -136,6 +197,86 @@ body, html {
             <input class="w3-input" type="text" placeholder="MQTT topic root"><br>
          </div>
 </div>
+
+<!--TBD-->
+<div id = 'TBD' class="w3-content w3-container Tab w3-padding-64">
+  <h3 class="w3-center">TBD</h3>
+         <div class="w3-container">
+            <input class="w3-input" type="text" placeholder="WebSocket MQTT Broker URL"><br>
+         </div>
+	<div class ="w3-cell-row">
+         <div class="w3-container w3-cell">     
+			<input class="w3-input" type="text" placeholder="MQTT Client ID"><br>
+		 </div>
+		 <div class="w3-container w3-cell">  
+			<input type="button" class="w3-button w3-black" value="Connect" id="btn_Connect_to_Broker" onclick="mqtt_Connect_with_Broker();">
+		 </div>
+    </div>
+	<hr>
+    <div class ="w3-cell-row">
+         <div class="w3-container w3-cell">     
+			<input class="w3-input" type="text" placeholder="MQTT Topic (Subscribe):"><br>
+		 </div>
+		 <div class="w3-container w3-cell">  
+			<input type="button" class="w3-button w3-black" value="Subscribe" onclick="mqtt_Subscribe_to_Topic();">
+		 </div>
+    </div>
+	<hr>
+		<div class="w3-container">
+            <input class="w3-input" type="text" placeholder="MQTT topic (Publish):"><br>
+         </div>
+	<div class ="w3-cell-row">
+         <div class="w3-container w3-cell">     
+			<input class="w3-input" type="text" placeholder="MQTT message:"><br>
+		 </div>
+		 <div class="w3-container w3-cell">  
+			<input type="button" class="w3-button w3-black" value="Publish" onclick="mqtt_Publish_Message();">
+		 </div>
+    </div>
+	
+	<form class="form-horizontal">
+         <div class="form-group">
+            <label class="col-sm-2 control-label" for="txtAr_Console">Console:</label>
+            <div class="col-sm-9">
+               <textarea ype="textarea" class="form-control" rows="12" cols="100" id="txtAr_Console"></textarea>
+            </div>
+         </div>
+         <div class="form-group">
+            <label class="col-sm-2 control-label" for="btn_Clear_Console"></label>
+            <div class="col-sm-4">
+               <button type="button" id="btn_Clear_Console" class="btn btn-warning col-sm-4" onclick="clear_Console();">Clear console</button>
+            </div>
+         </div>
+      </form>
+	  
+	  <section id="pubsub" class="panel-body">
+         <h2>Publishing and subscribing</h2>
+         <p>
+            <input disabled type="button" class="btn btn-success" id="button1on" onclick='led("green", "1");' value=" on  " />
+            <input type="button" class="btn btn-danger" disabled id="button1off" onclick='led("green", "0");' value=" off " /> &rarr; Broker &rarr;
+            <font id="ledgreenO" size='6' bgcolor='grey' color='green'>O </font>
+         </p>
+         <p>
+            <input type="button" class="btn btn-success" id="button2on" onclick='led("yellow", "1");' value=" on  " />
+            <input type="button" class="btn btn-danger" id="button2off" onclick='led("yellow", "0");' value=" off " /> &rarr; Broker &rarr;
+            <font id="ledyellowO" size='6' bgcolor='grey' color='yellow'> O </font>
+         </p>
+         <p>
+            <input type="button" class="btn btn-success" id="button3on" onclick='led("red", "1");' value=" on  " />
+            <input type="button" class="btn btn-danger" id="button3off" onclick='led("red", "0");' value=" off " /> &rarr; Broker &rarr;
+            <font id="ledredO" size='6' bgcolor='grey' color='red'> O </font>
+         </p>
+         <p>
+            Broker &rarr; Temperature = &nbsp;
+            <textarea name="outputArea1" id="outputArea1" rows=1 cols=5 onClick="this.select();" readonly="yes">???</textarea>
+         </p>
+         <p>
+            Broker &rarr; &nbsp; &nbsp; &nbsp; Humidity = &nbsp;
+            <textarea name="outputArea2" id="outputArea2" rows=1 cols=5 onClick="this.select();" readonly="yes">???</textarea>
+         </p>
+      </section>
+</div>
+
 <!-- Footer -->
 <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
   <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
@@ -149,6 +290,17 @@ body, html {
   </div>
   <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
 </footer>
+
+ <script>
+function openTab(Tab) {
+    var i;
+    var x = document.getElementsByClassName("Tab");
+    for (i = 0; i < x.length; i++) {
+       x[i].style.display = "none";  
+    }
+    document.getElementById(Tab).style.display = "block";  
+}
+</script>
  
 <script>
 // Change style of navbar on scroll
@@ -172,19 +324,21 @@ function toggleFunction() {
     }
 }
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBu-916DdpKAjTmJNIgngS6HL_kDIKU0aU&callback=myMap"></script>
 
-  <script type="text/javascript">
+    <script type="text/javascript">
       var WebSocket_MQTT_Broker_URL = "";
       var MQTT_Client_ID = "";
       var MQTT_Topic = "";
       var MQTT_Client = "";
       var MQTT_topic_root = "";
+      var rtt1 = "??";
+      var rtt2 = "??";
+      var rtt3 = "??";
 
       function initVars() {
          console.log("initVars");
          MQTT_device = "webapp";
-         MQTT_topic_root = "ESEiot/1718/";
+         MQTT_topic_root = "ESEiot/1718/WebApp";
       }
 
       function mqtt_Connect_with_Broker() {
@@ -204,9 +358,16 @@ function toggleFunction() {
          MQTT_Client.onConnectionLost = onConnectionLost;
          MQTT_Client.onMessageArrived = onMessageArrived;
 
-         MQTT_Client.connect({
-            onSuccess: onConnect
-         });
+         var options = {
+            // Connection attempt timeout in seconds
+            timeout: 3,
+            onSuccess: onConnect,
+            onFailure: function(message) {
+               alert("Connection to MQTT broker failed: " + message.errorMessage);
+            }
+         };
+
+         MQTT_Client.connect(options);
       }
 
       // Called when the client connects
@@ -223,7 +384,7 @@ function toggleFunction() {
          document.getElementById("button2off").disabled = false;
          document.getElementById("button3on").disabled = false;
          document.getElementById("button3off").disabled = false;
-         MQTT_Client.subscribe("ESEiot/1718/#");
+         MQTT_Client.subscribe("ESEiot/1718/WebApp/#");
       }
 
       // Called when the client loses its connection
@@ -239,16 +400,19 @@ function toggleFunction() {
 
       // called when a message arrives
       function onMessageArrived(message) {
-         console.log("MQTT message recieved: " +
-            "\"" + message.payloadString + "\"" + " MQTT topic: " +
-            "\"" + message.destinationName + "\"" + " QoS: " + "\"" +
-            message.qos + "\"");
+         console.log(
+            "MQTT message recieved: " + "\"" + message.payloadString + "\"" +
+            " MQTT topic: " + "\"" + message.destinationName + "\"" +
+            " QoS: " + "\"" + message.qos + "\"" +
+            " Retained: " + "\"" + message.retained + "\"");
          if (message.destinationName === MQTT_topic_root + "ledgreen") {
             if (message.payloadString === '1') {
                $('#ledgreenO').attr('color', 'green');
             } else {
                $('#ledgreenO').attr('color', 'grey');
             }
+            rtt1 = (new Date()).getTime() - rtt1;
+            document.getElementById("rtt1").innerHTML = rtt1;
          }
          if (message.destinationName === MQTT_topic_root + "ledyellow") {
             if (message.payloadString === '1') {
@@ -256,6 +420,8 @@ function toggleFunction() {
             } else {
                $('#ledyellowO').attr('color', 'grey');
             }
+            rtt2 = (new Date()).getTime() - rtt2;
+            document.getElementById("rtt2").innerHTML = rtt2;
          }
          if (message.destinationName === MQTT_topic_root + "ledred") {
             if (message.payloadString === '1') {
@@ -263,38 +429,70 @@ function toggleFunction() {
             } else {
                $('#ledredO').attr('color', 'grey');
             }
+            rtt3 = (new Date()).getTime() - rtt3;
+            document.getElementById("rtt3").innerHTML = rtt3;
+         }
+         if (message.destinationName === MQTT_topic_root + "temperature") {
+            document.getElementById('outputArea1').style.border = "solid red";
+            document.getElementById('outputArea1').innerHTML = message.payloadString;
+            setTimeout(resetTemperatureBorder, 5000);
          }
       }
 
       // Document Ready Event
       $(document).ready(function() {
+         //Generate Random MQTT Clinet ID
+         gen_MQTT_Client_ID();
          //Set default MQTT Broker WebSocket URL
          document.getElementById("txt_MQTT_Broker_URL").value =
             "ws://broker.hivemq.com:8000/mqtt";
          document.getElementById("txt_MQTT_topicroot").value =
-            "ESEiot/1718/";
-         //Generate Random MQTT Clinet ID
-         gen_MQTT_Client_ID();
+            "ESEiot/1718/WebApp/" + MQTT_Client_ID + "/";
+
          document.getElementById("button1on").disabled = true;
          document.getElementById("button1off").disabled = true;
          document.getElementById("button2on").disabled = true;
          document.getElementById("button2off").disabled = true;
          document.getElementById("button3on").disabled = true;
          document.getElementById("button3off").disabled = true;
+         document.getElementById("rtt1").innerHTML = rtt1;
+         document.getElementById("rtt2").innerHTML = rtt2;
+         document.getElementById("rtt3").innerHTML = rtt3;
       })
 
       // Randomly generate Client ID
       function gen_MQTT_Client_ID() {
          document.getElementById("txt_MQTT_Client_ID").value =
             Math.floor(100000000000 + Math.random() * 900000000000);
+         MQTT_Client_ID = document.getElementById("txt_MQTT_Client_ID").value;
       }
 
       function led(color, msg) {
          var message = new Paho.MQTT.Message(msg);
          message.destinationName = MQTT_topic_root + "led" + color;
+         if (color == 'green') {
+            rtt1 = (new Date()).getTime();
+            message.qos = 0;
+         }
+         if (color == 'yellow') {
+            rtt2 = (new Date()).getTime();
+            message.qos = 1;
+         }
+         if (color == 'red') {
+            rtt3 = (new Date()).getTime();
+            message.qos = 2;
+         }
          MQTT_Client.send(message);
+         console.log(
+            "MQTT message send: " + "\"" + message.payloadString + "\"" +
+            " MQTT topic: " + "\"" + message.destinationName + "\"" +
+            " QoS: " + "\"" + message.qos + "\"" +
+            " Retained: " + "\"" + message.retained + "\"");
+      }
+
+      function resetTemperatureBorder() {
+         document.getElementById('outputArea1').style.border = "";
       }
    </script>
-
-</body>
+   </body>
 </html>
