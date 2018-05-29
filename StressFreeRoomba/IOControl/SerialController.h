@@ -6,19 +6,20 @@
 #define ROOMBA_IOT_SERIALCONTROLLER_H
 
 #include <string>
+#include "../CommandQueue.h"
+#include "../../_libUtils/SerialLink/SerialLink.h"
+#include "Dataframe.h"
 
 class SerialController {
-public:
-    SerialController(std::string devPath, int busSpeed);
-    void sendMessage();
-    std::string recvMessage();
-    bool sendCommand(std::string command, std::string &result);
 private:
-    int _busspeed;
-    std::string _devPath;
-
-    bool openBus( std::string devPath);
-    void setBusSpeed(int speed);
+    SerialLink _serialLink;
+    CommandQueue _queue;
+public:
+    SerialController(std::string devPath, int busSpeed, CommandQueue &queue): _serialLink(devPath, busSpeed), _queue(queue){}
+    void sendData(Dataframe frame);
+    Dataframe recvData(int length);
+    bool sendCommand(Dataframe command, Dataframe &result);
+    void Shutdown();
 };
 
 

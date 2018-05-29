@@ -1,5 +1,5 @@
-#ifndef PARWAIT_H
-#define PARWAIT_H
+#ifndef PAREXE_H
+#define PAREXE_H
 
 #include <atomic>
 //#include <chrono>
@@ -14,7 +14,9 @@
 
 /// ParExe forks #command_ in a detached thread.
 /// Redirects the output of #command_ to #output_.
-/// Reeds maximal #MAX_LINES from output of executed command.
+/// Reeds maximal #MAX_LINES_ from the output of the executed command.
+/// @todo Remove debug output to std::cerr.
+/// @todo Remove output texts containing Python.
 class ParExe
 {
 public:
@@ -101,3 +103,4 @@ private:
 };
 
 #endif
+

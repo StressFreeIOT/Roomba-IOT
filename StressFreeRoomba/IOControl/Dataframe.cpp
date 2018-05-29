@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <string>
 #include "Dataframe.h"
 
 /********************************************//**
@@ -23,6 +24,21 @@ Dataframe::Dataframe(){
  ***********************************************/
 Dataframe::Dataframe(const std::array<uint8_t, 255> &array){
     data = array;
+    setChecksum();
+}
+
+/********************************************//**
+ *  \brief Constructs a data frame with the provided vector
+ *  @param vector Vector to construct data frame with.
+ ***********************************************/
+Dataframe::Dataframe(const std::vector<uint8_t> &vector){
+    int index = 0;
+    for (auto &a:vector){
+        data[index++] = a;
+    }
+    for (;index <= 255; index++){
+        data[index] = 0;
+    }
     setChecksum();
 }
 
@@ -69,4 +85,27 @@ void Dataframe::show(){
         std::cout << std::to_string(a) << " ";
     }
     std::cout << std::endl;
+}
+
+/********************************************//**
+ *  Returns a copy of the data in the dataframe
+ ***********************************************/
+const std::array<uint8_t, 255> Dataframe::getData() {
+    return std::array<uint8_t, 255>();
+}
+
+/********************************************//**
+ *  checks if 2 dataframes are equel
+ *  @returns bool
+ *          (true) == equel
+ *          (false) == not equel
+ ***********************************************/
+bool Dataframe::compare(Dataframe dataframe2) {
+    const std::array<uint8_t, 255> data2 = dataframe2.getData();
+    for(int i = 0; i <= 255; i++){
+        if(data2[i] != data[i]) {
+            return false;
+        }
+    }
+    return true;
 }
