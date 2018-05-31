@@ -15,6 +15,7 @@ public:
     const bool checksumIsCorrect();
     const int getChecksum();
     void show();
+    void push_back (const uint8_t &val);
 private:
     uint8_t genChecksum();
     int _checksum;
