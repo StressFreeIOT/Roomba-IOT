@@ -7,9 +7,8 @@
 
 //##############Public FUNCTIONS###########################
 void SerialController::sendData(Dataframe frame) {
-    const std::array<uint8_t, 255> data = frame.getData();
-    std::vector<uint8_t> dataVector(data.begin(), data.end());
-    _serialLink.write(dataVector);
+    frame.push_back(frame.getChecksum());
+    _serialLink.write(frame);
 }
 
 Dataframe SerialController::recvData(int length) {
@@ -19,13 +18,10 @@ Dataframe SerialController::recvData(int length) {
 }
 
 bool SerialController::sendCommand(Dataframe command, Dataframe &result) {
-    const std::array<uint8_t, 255> data = command.getData();
-    std::vector<uint8_t> dataVector(data.begin(), data.end());
-    std::vector<uint8_t> ot{};
+    Dataframe returnValue{};
 
-    _serialLink.readWrite(dataVector, ot, dataVector.size());
-    Dataframe returnValue(ot);
-    bool buff = result.compare(returnValue);
+    _serialLink.readWrite(command, returnValue, command.size());
+    bool buff = result == returnValue;
     result = returnValue;
     return buff;
 }

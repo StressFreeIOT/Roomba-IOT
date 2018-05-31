@@ -8,19 +8,16 @@
 #include <array>
 #include <vector>
 
-class Dataframe{
+class Dataframe : public std::vector<uint8_t>{
 public:
     Dataframe();
-    Dataframe(const std::array<uint8_t, 255> &array);
-    Dataframe(const std::vector<uint8_t> &array);
+    Dataframe(const std::vector<uint8_t> &vector);
     const bool checksumIsCorrect();
+    const int getChecksum();
     void show();
-    const std::array<uint8_t, 255> getData();
-    bool compare(Dataframe dataframe2);
 private:
-    std::array<uint8_t, 255> data;
     uint8_t genChecksum();
-    void setChecksum();
+    int _checksum;
 };
 
 #endif //ROOMBA_IOT_DATAFRAME_H

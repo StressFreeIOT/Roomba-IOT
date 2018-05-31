@@ -13,9 +13,8 @@
 class SerialController {
 private:
     SerialLink _serialLink;
-    CommandQueue _queue;
 public:
-    SerialController(std::string devPath, int busSpeed, CommandQueue &queue): _serialLink(devPath, busSpeed), _queue(queue){}
+    SerialController(std::string devPath, int busSpeed): _serialLink(devPath, busSpeed){}
     void sendData(Dataframe frame);
     Dataframe recvData(int length);
     bool sendCommand(Dataframe command, Dataframe &result);
