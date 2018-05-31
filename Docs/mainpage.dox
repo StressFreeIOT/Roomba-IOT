@@ -1,0 +1,49 @@
+/*!
+
+\mainpage Info
+\section sec1 Authors
+- Wesley Werter     585233
+- Jens Wolvers      575542
+- Bert van Rossem   584395
+- Lars van Lent     579960
+
+\section sec2 Compiling and executing StressFreeRoomba
+
+MQTT client for controlling the roomba:
+- Clean
+- Spot
+- Dock
+
+\section sec3 Compiling StressFreeRoomba
+
+This application must be compiled by a makefile using the make command 
+executing \link Makefile \endlink.
+
+StressFreeRoomba uses the Mosquitto C and C++ library, this library must be installed.
+
+\section sec4 Executing StressFreeRoomba
+
+Use the next commands and options to start the application. Some examples:
+
+- host = 127.0.0.1 (default)
+- port = 1883 (default)
+
+\verbatim ./StressFreeRoomba \endverbatim
+
+- host = broker.hivemq.com  
+- port = 1883 (default)
+
+\verbatim ./StressFreeRoomba  broker.hivemq.com \endverbatim
+
+- host = RPI2000.local  
+- port = 5000
+
+\verbatim ./StressFreeRoomba  RPI2000.local  5000 \endverbatim
+
+After starting StressFreeRoomba will try to connect to the selected MQTT broker.
+
+The application will show a lot of logging and debug information to stdout
+and stderr. This can be switched off by changing the related code.
+
+*/
+
