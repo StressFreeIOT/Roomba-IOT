@@ -26,7 +26,7 @@ body, html {
 hr { background-color: red; height: 1px; border: 0; }
 
 /* Create a Parallax Effect */
-.bgimg-1, .bgimg-2, .bgimg-3 {
+.bgimg-1, .bgimg-2 {
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
@@ -154,35 +154,6 @@ hr { background-color: red; height: 1px; border: 0; }
          <div class="w3-container">
             <input class="w3-input" type="text" placeholder="MQTT topic root" id="txt_MQTT_topicroot"><br>
          </div>
-		 
-		 <section id="pubsub" class="panel-body">
-         <h2>Publishing and subscribing</h2>
-         <p>
-            <input disabled type="button" class="btn btn-success" id="button1on" onclick='led("green", "1");' value=" on  " />
-            <input type="button" class="btn btn-danger" disabled id="button1off" onclick='led("green", "0");' value=" off " /> &rarr; Broker &rarr;
-            <font id="ledgreenO" size='6' bgcolor='grey' color='green'><b> O </b></font>
-            &nbsp; &nbsp; Round-trip time = <span id="rtt1"></span> msec
-         </p>
-         <p>
-            <input type="button" class="btn btn-success" id="button2on" onclick='led("yellow", "1");' value=" on  " />
-            <input type="button" class="btn btn-danger" id="button2off" onclick='led("yellow", "0");' value=" off " /> &rarr; Broker &rarr;
-            <font id="ledyellowO" size='6' bgcolor='grey' color='yellow'><b> O </b></font>
-            &nbsp; &nbsp; Round-trip time = <span id="rtt2"></span> msec
-         </p>
-         <p>
-            <input type="button" class="btn btn-success" id="button3on" onclick='led("red", "1");' value=" on " />
-            <input type="button" class="btn btn-danger" id="button3off" onclick='led("red", "0");' value=" off " /> &rarr; Broker &rarr;
-            <font id="ledredO" size='6' bgcolor='grey' color='red'><b> O </b></font>
-            &nbsp; &nbsp; Round-trip time = <span id="rtt3"></span> msec
-         </p>
-         <p>
-            Broker &rarr; Temperature = &nbsp;
-            <textarea name="outputArea1" id="outputArea1" rows=1 cols=10 style="resize:none" onClick="this.select();" readonly="yes">???</textarea>
-         </p>
-         <p>
-            Broker &rarr; &nbsp; &nbsp; &nbsp; Humidity = &nbsp;
-            <textarea name="outputArea2" id="outputArea2" rows=1 cols=10 style="resize:none" onClick="this.select();" readonly="yes">???</textarea>
-         </p>
       </section>
 </div>
 
@@ -200,69 +171,6 @@ hr { background-color: red; height: 1px; border: 0; }
 			<input type="button" class="w3-button w3-black" value="Connect" id="btn_Connect_to_Broker" onclick="mqtt_Connect_with_Broker();">
 		 </div>
     </div>
-<!--	<hr>
-    <div class ="w3-cell-row">
-         <div class="w3-container w3-cell">     
-			<input class="w3-input" type="text" placeholder="MQTT Topic (Subscribe):"><br>
-		 </div>
-		 <div class="w3-container w3-cell">  
-			<input type="button" class="w3-button w3-grey" value="Subscribe" onclick="mqtt_Subscribe_to_Topic();">
-		 </div>
-    </div>
-	<hr>
-		<div class="w3-container">
-            <input class="w3-input" type="text" placeholder="MQTT topic (Publish):"><br>
-         </div>
-	<div class ="w3-cell-row">
-         <div class="w3-container w3-cell">     
-			<input class="w3-input" type="text" placeholder="MQTT message:"><br>
-		 </div>
-		 <div class="w3-container w3-cell">  
-			<input type="button" class="w3-button w3-white" value="Publish" onclick="mqtt_Publish_Message();">
-		 </div>
-    </div>
-	
-	<form class="form-horizontal">
-         <div class="form-group">
-            <label class="col-sm-2 control-label" for="txtAr_Console">Console:</label>
-            <div class="col-sm-9">
-               <textarea ype="textarea" class="form-control" rows="12" cols="100" id="txtAr_Console"></textarea>
-            </div>
-         </div>
-         <div class="form-group">
-            <label class="col-sm-2 control-label" for="btn_Clear_Console"></label>
-            <div class="col-sm-4">
-               <button type="button" id="btn_Clear_Console" class="btn btn-warning col-sm-4" onclick="clear_Console();">Clear console</button>
-            </div>
-         </div>
-      </form>
-	  
-	  <section id="pubsub" class="panel-body">
-         <h2>Publishing and subscribing</h2>
-         <p>
-            <input disabled type="button" class="btn btn-success" id="button1on" onclick='led("green", "1");' value=" on  " />
-            <input type="button" class="btn btn-danger" disabled id="button1off" onclick='led("green", "0");' value=" off " /> &rarr; Broker &rarr;
-            <font id="ledgreenO" size='6' bgcolor='grey' color='green'>O </font>
-         </p>
-         <p>
-            <input type="button" class="btn btn-success" id="button2on" onclick='led("yellow", "1");' value=" on  " />
-            <input type="button" class="btn btn-danger" id="button2off" onclick='led("yellow", "0");' value=" off " /> &rarr; Broker &rarr;
-            <font id="ledyellowO" size='6' bgcolor='grey' color='yellow'> O </font>
-         </p>
-         <p>
-            <input type="button" class="btn btn-success" id="button3on" onclick='led("red", "1");' value=" on  " />
-            <input type="button" class="btn btn-danger" id="button3off" onclick='led("red", "0");' value=" off " /> &rarr; Broker &rarr;
-            <font id="ledredO" size='6' bgcolor='grey' color='red'> O </font>
-         </p>
-         <p>
-            Broker &rarr; Temperature = &nbsp;
-            <textarea name="outputArea1" id="outputArea1" rows=1 cols=5 onClick="this.select();" readonly="yes">???</textarea>
-         </p>
-         <p>
-            Broker &rarr; &nbsp; &nbsp; &nbsp; Humidity = &nbsp;
-            <textarea name="outputArea2" id="outputArea2" rows=1 cols=5 onClick="this.select();" readonly="yes">???</textarea>
-         </p>
-      </section>-->
 </div>
 
 <!--Buttons-->
@@ -286,9 +194,9 @@ hr { background-color: red; height: 1px; border: 0; }
 	<!--All buttons-->
 	<div class ="w3-cell-row">
 		 <div class="w3-container w3-cell">  
-			<input type="button" class="w3-button w3-black" value="Clean" id="btn_clean" onclick="mqtt_clean();">
-			<input type="button" class="w3-button w3-black" value="Spot" id="btn_spot" onclick="mqtt_spot();">
-			<input type="button" class="w3-button w3-black" value="Dock/Max" id="btn_dock" onclick="mqtt_dock();">
+			<input type="button" class="w3-button w3-black" value="Clean" id="clean" onclick="mqtt_clean();">
+			<input type="button" class="w3-button w3-black" value="Spot" id="spot" onclick="mqtt_spot();">
+			<input type="button" class="w3-button w3-black" value="Dock/Max" id="dock" onclick="mqtt_dock();">
 		 </div>
     </div>
 </div>
@@ -332,7 +240,7 @@ hr { background-color: red; height: 1px; border: 0; }
       function initVars() {
          console.log("initVars");
          MQTT_device = "webapp";
-         MQTT_topic_root = "ESEiot/1718/WebApp";
+         MQTT_topic_root = "ESEiot/1718sem4/WebApp";
       }
 	  
 	  // Change style of navbar on scroll
@@ -357,15 +265,15 @@ function toggleFunction() {
 }
 
 	function mqtt_dock(){
-	
+		MQTT_Client.publish("ESEiot/1718sem4/WebApp/Dock, value");
 	}
 	
 	function mqtt_clean(){
-	
+		MQTT_Client.publish("ESEiot/1718sem4/WebApp/Clean, value");
 	}
 	
 	function mqtt_spot(){
-	
+		MQTT_Client.publish("ESEiot/1718sem4/WebApp/Spot, value");
 	}
 
       function mqtt_Connect_with_Broker() {
@@ -408,11 +316,11 @@ function toggleFunction() {
          // ??document.getElementById("pubsub").style.display = 'visible';
          document.getElementById("button1on").disabled = false;
          document.getElementById("button1off").disabled = false;
-         document.getElementById("button2on").disabled = false;
-         document.getElementById("button2off").disabled = false;
-         document.getElementById("button3on").disabled = false;
-         document.getElementById("button3off").disabled = false;
-         MQTT_Client.subscribe("ESEiot/1718/WebApp/#");
+		 document.getElementById("clean").disabled = false;
+		 document.getElementById("spot").disabled = false;
+		 document.getElementById("dock").disabled = false;
+         
+         MQTT_Client.subscribe("ESEiot/1718sem4/WebApp/#");
       }
 
       // Called when the client loses its connection
@@ -475,14 +383,13 @@ function toggleFunction() {
          document.getElementById("txt_MQTT_Broker_URL").value =
             "ws://broker.hivemq.com:8000/mqtt";
          document.getElementById("txt_MQTT_topicroot").value =
-            "ESEiot/1718/WebApp/" + MQTT_Client_ID + "/";
+            "ESEiot/1718sem4/WebApp/" + MQTT_Client_ID + "/";
 
          document.getElementById("button1on").disabled = true;
          document.getElementById("button1off").disabled = true;
-         document.getElementById("button2on").disabled = true;
-         document.getElementById("button2off").disabled = true;
-         document.getElementById("button3on").disabled = true;
-         document.getElementById("button3off").disabled = true;
+         document.getElementById("clean").disabled = true;
+         document.getElementById("spot").disabled = true;
+		 document.getElementById("dock").disabled = true;
          document.getElementById("rtt1").innerHTML = rtt1;
          document.getElementById("rtt2").innerHTML = rtt2;
          document.getElementById("rtt3").innerHTML = rtt3;
