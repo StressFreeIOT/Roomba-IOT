@@ -1,9 +1,9 @@
 /*
 Authors
-@ Wesley Werter
-@ Jens Wolvers
-@ Bert van Rossem
-@ Lars van Lent
+@ Wesley Werter     585233
+@ Jens Wolvers      575542
+@ Bert van Rossem   584395
+@ Lars van Lent     579960
 */
 
 #include <iostream>
