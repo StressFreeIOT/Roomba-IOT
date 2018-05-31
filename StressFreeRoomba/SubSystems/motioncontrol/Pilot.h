@@ -8,13 +8,19 @@
 
 class Pilot {
   public:
-    void serialSendCommand(Dataframe &data);
-    void serialCallback(Dataframe &data);
     void serialMakeDataframe(Dataframe &data);
+    void serialSendCommand(Dataframe &data);
+  
+    void serialCallback(Dataframe &data);
+    void 
+    
+  
   
   private:
     Dataframe data{};
     int _angle, _speed;
+  
+    int _distance, int _angle;
 };
 
 
