@@ -24,7 +24,7 @@ void Pilot::serialMakeDataframe(Dataframe &data){
   if (_radius == radiusRotateCW){
     radius = 65535;
   }
-  if (_radius == radiusRotateCW){
+  if (_radius == radiusRotateCCW){
     radius = 1;
   }
   
@@ -67,7 +67,7 @@ int Pilot::serialDeconstruct(Dataframe &data){
    short distance = 0, angle = 0;
   
    //Comment by Bert
-    //Is the opcode sent back? If so the data bytes must be changed to the correct ones
+   //Is the opcode sent back? If so the data bytes must be changed to the correct ones
   
    distance = data.at(1);
    distance += (data.at(0) << 8) & 0xFF00;
