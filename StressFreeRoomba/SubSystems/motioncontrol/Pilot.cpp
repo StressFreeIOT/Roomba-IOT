@@ -4,17 +4,7 @@
 
 #include "Pilot.h"
 
-
-  
-void Pilot::serialSendCommand(Dataframe &data){
-
-}
-
-void serialCallback(Dataframe &data){
-  
-}
-      
-void serialMakeDataframe(Dataframe &data){
+void Pilot::serialMakeDataframe(Dataframe &data){
   /* Add bytes
   137   drive
   ?     speed high
@@ -54,4 +44,40 @@ void serialMakeDataframe(Dataframe &data){
   data.push_back(speedData.at(1));
   data.push_back(radiusData.at(0));
   data.push_back(radiusData.at(1));
+}
+  
+void Pilot::serialSendCommand(Dataframe &data){
+
+}
+
+void Pilot::serialCallback(Dataframe &data){
+  
+}
+      
+int Pilot::serialDeconstruct(Dataframe &data){
+   //19 for distance -> gives signed 16-bit variable, msb first
+   //20 for angle -> gives signed 16-bit variable, msb first
+  
+   //Check for checksum
+   if (!data.checksumIsCorrect()){
+      return -1;
+   }  
+  
+   //Get data
+   short distance = 0, angle = 0;
+  
+   //Comment by Bert
+    //Is the opcode sent back? If so the data bytes must be changed to the correct ones
+  
+   distance = data.at(1);
+   distance += (data.at(0) << 8) & 0xFF00;
+   
+   angle = data.at(3);
+   angle += (data.at(2) << 8) & 0xFF00;  
+  
+   //Add data to previous      
+   _distance += distance;
+   _angle += angle;
+           
+   return 0;
 }  
