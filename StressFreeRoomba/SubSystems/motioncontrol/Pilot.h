@@ -7,25 +7,30 @@
 
 class Pilot {
   public:
+    //Constructor
+    Pilot();
+    Pilot(int speed, int angle);
+  
+    //For sending via serial
+    void serialConstructDataframe(Dataframe &data);
+    void serialSendCommand(Dataframe &data);
+  
+    //For receiving via serial
+    void serialCallback(Dataframe &data);
+    void serialDeconstructDataframe(Dataframe &data);
+  
+    //Communication with Roomba class
+    void pilotDrive(int speed, int radius);
+    void pilotData(int &distance, int &angle);
+    
     //Special cases
     static const int radiusStraight = 2001;
     static const int radiusRotateCW = 2002;
     static const int radiusRotateCCW = 2003;
   
-    //For sending via serial
-    void serialMakeDataframe(Dataframe &data);
-    void serialSendCommand(Dataframe &data);
-  
-    //For receiving via serial
-    void serialCallback(Dataframe &data);
-    void serialDeconstruct(Dataframe &data);
-  
-    //Communication with Roomba class
-    
-    
   private:
     Dataframe data{};
-    int _angle, _speed;
+    int _radius, _speed;
     
     //Optional
     int _distance, int _angle;
