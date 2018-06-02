@@ -4,7 +4,16 @@
 
 #include "Pilot.h"
 
-void Pilot::serialMakeDataframe(Dataframe &data){
+Pilot::Pilot(){
+  std::cout << "Pilot made" << std::endl;
+}
+
+Pilot::Pilot(int speed, int angle){
+  std::cout << "Pilot made" << std::endl;
+  pilotDrive(speed, radius);
+}
+
+void Pilot::serialConstructDataframe(Dataframe &data){
   /* Add bytes
   137   drive
   ?     speed high
@@ -54,7 +63,7 @@ void Pilot::serialCallback(Dataframe &data){
   
 }
       
-int Pilot::serialDeconstruct(Dataframe &data){
+int Pilot::serialDeconstructDataframe(Dataframe &data){
    //19 for distance -> gives signed 16-bit variable, msb first
    //20 for angle -> gives signed 16-bit variable, msb first
   
@@ -81,3 +90,20 @@ int Pilot::serialDeconstruct(Dataframe &data){
            
    return 0;
 }  
+
+void Pilot::pilotDrive(int speed, int radius){
+  //Set variables
+  _speed = speed;
+  _radius = radius;
+  
+  //Construct dataframe
+  serialConstructDataframe(data);
+  
+  //Send command
+  serialSendCommand(data);
+}  
+
+    
+void Pilot::pilotData(int &distance, int &angle){
+  
+}
