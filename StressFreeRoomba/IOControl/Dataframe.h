@@ -18,7 +18,7 @@ public:
     void push_back (const uint8_t &val);
 private:
     uint8_t genChecksum();
-    int _checksum;
+    uint8_t _checksum;
 };
 
 #endif //ROOMBA_IOT_DATAFRAME_H
