@@ -5,9 +5,13 @@
 #ifndef ROOMBA_IOT_PILOT_H
 #define ROOMBA_IOT_PILOT_H
 
-
 class Pilot {
   public:
+    //Special cases
+    static const int radiusStraight = 2001;
+    static const int radiusRotateCW = 2002;
+    static const int radiusRotateCCW = 2003;
+  
     //For sending via serial
     void serialMakeDataframe(Dataframe &data);
     void serialSendCommand(Dataframe &data);
