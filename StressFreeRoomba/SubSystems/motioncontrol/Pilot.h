@@ -8,18 +8,22 @@
 
 class Pilot {
   public:
+    //For sending via serial
     void serialMakeDataframe(Dataframe &data);
     void serialSendCommand(Dataframe &data);
   
+    //For receiving via serial
     void serialCallback(Dataframe &data);
-    void 
+    void serialDeconstruct(Dataframe &data);
+  
+    //Communication with Roomba class
     
-  
-  
+    
   private:
     Dataframe data{};
     int _angle, _speed;
-  
+    
+    //Optional
     int _distance, int _angle;
 };
 
