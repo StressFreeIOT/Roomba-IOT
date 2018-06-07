@@ -13,46 +13,63 @@ Pilot::Pilot(int speed, int angle){
   pilotDrive(speed, radius);
 }
 
-void Pilot::serialConstructDataframe(Dataframe &data){
-  /* Add bytes
-  137   drive
-  ?     speed high
-  ?     speed low
-  ?     radius high
-  ?     radius low
-  */
-  
-  //Limits
-  int speed = min(max(_speed, MIN_SPEED), MAX_SPEED); //-500 to 500 mm/s
-  int radius = min(max(_radius, MIN_RADIUS), MAX_RADIUS); //-2000 to 2000 mm/s
-  
-  //Check for special cases
-  if (_radius == radiusStraight){
-    radius = 32767;
-  }
-  if (_radius == radiusRotateCW){
-    radius = 65535;
-  }
-  if (_radius == radiusRotateCCW){
-    radius = 1;
-  }
-  
-  //Deconstruct data
-  std::vector<uint8_t, 2> speedData{};
-  std::vector<uint8_t, 2> radiusData{};
-  
-  speedData.at(0) = (speed & 0x000000FF) << 8;
-  speedData.at(1) = speed & 0x000000FF;
-  
-  radiusData.at(0) = (radius & 0x000000FF) << 8;
-  radiusData.at(1) = radius & 0x000000FF;
-  
-  //Make dataframe
-  data.push_back(137);
-  data.push_back(speedData.at(0));
-  data.push_back(speedData.at(1));
-  data.push_back(radiusData.at(0));
-  data.push_back(radiusData.at(1));
+void Pilot::serialConstructDataframe(Dataframe &data, int type){
+  if (type == _formatDrive){
+    /* Add bytes
+    137   drive
+    ?     speed high
+    ?     speed low
+    ?     radius high
+    ?     radius low
+    */
+
+    //Limits
+    int speed = min(max(_speed, MIN_SPEED), MAX_SPEED); //-500 to 500 mm/s
+    int radius = min(max(_radius, MIN_RADIUS), MAX_RADIUS); //-2000 to 2000 mm/s
+
+    //Check for special cases
+    if (_radius == radiusStraight){
+      radius = 32767;
+    }
+    if (_radius == radiusRotateCW){
+      radius = 65535;
+    }
+    if (_radius == radiusRotateCCW){
+      radius = 1;
+    }
+
+    //Deconstruct data
+    std::vector<uint8_t, 2> speedData{};
+    std::vector<uint8_t, 2> radiusData{};
+
+    speedData.at(0) = (speed & 0x000000FF) << 8;
+    speedData.at(1) = speed & 0x000000FF;
+
+    radiusData.at(0) = (radius & 0x000000FF) << 8;
+    radiusData.at(1) = radius & 0x000000FF;
+
+    //Make dataframe
+    data.push_back(137);
+    data.push_back(speedData.at(0));
+    data.push_back(speedData.at(1));
+    data.push_back(radiusData.at(0));
+    data.push_back(radiusData.at(1));
+
+    return 0;  
+  } else if (type == _formatData){
+    /* Add bytes
+    19   distance
+    20   angle
+    */
+
+    //Make dataframe
+    data.push_back(19);
+    data.push_back(20);
+
+    return 0;
+  } else {
+    return -1;
+  }  
 }
   
 void Pilot::serialSendCommand(Dataframe &data){
