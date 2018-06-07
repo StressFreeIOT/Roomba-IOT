@@ -3,6 +3,11 @@
 //
 
 #include "BatteryChecker.h"
+#include <mutex>
+#include <atomic>
+
+//Mutex
+mutex mtx;
 
 BatteryChecker::BatteryChecker(){
   std::cout << "BatteryChecker started" << std::endl;
@@ -37,7 +42,7 @@ void BatteryChecker::serialCallback(Dataframe &data){
   
 }
 
-void BatteryChecker::serialDeconstructDataframe(Dataframe &data){
+int BatteryChecker::serialDeconstructDataframe(Dataframe &data){
    /* Add bytes
    21   charging state  ->gives 1 unsigned byte
    22   voltage         ->gives 2 unsigned bytes
@@ -87,6 +92,9 @@ void BatteryChecker::serialDeconstructDataframe(Dataframe &data){
    batteryInfo.batteryLevel = (100 * batteryInfo.batteryCharge) / batteryInfo.batteryCapacity;
   
    batteryInfo.newData = 1;
+  
+   lock_guard<mutex> lock(mtx);
+   _batteryInfo = batteryInfo;
            
    return 0;
 }  
