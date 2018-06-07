@@ -105,5 +105,9 @@ void Pilot::pilotDrive(int speed, int radius){
 
     
 void Pilot::pilotData(int &distance, int &angle){
+  //Construct dataframe
+  serialConstructDataframe(data);
   
+  //Send command
+  serialSendCommand(data);
 }
