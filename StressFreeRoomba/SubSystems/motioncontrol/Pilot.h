@@ -12,7 +12,7 @@ class Pilot {
     Pilot(int speed, int angle);
   
     //For sending via serial
-    void serialConstructDataframe(Dataframe &data);
+    void serialConstructDataframe(Dataframe &data, int type);
     void serialSendCommand(Dataframe &data);
   
     //For receiving via serial
@@ -34,6 +34,8 @@ class Pilot {
     
     //Optional
     int _distance, int _angle;
+  
+    static const int _formatDrive = 0, _formatData = 1;
 };
 
 
