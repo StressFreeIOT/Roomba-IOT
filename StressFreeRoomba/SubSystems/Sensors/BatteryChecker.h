@@ -13,6 +13,7 @@ typedef struct{
   unsigned int batteryCharge;
   unsigned int batteryCapacity;
   int batteryLevel;
+  int newData;
 } battery_info_t;  
 
 class BatteryChecker {
