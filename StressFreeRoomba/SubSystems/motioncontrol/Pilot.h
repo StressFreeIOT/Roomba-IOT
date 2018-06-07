@@ -35,7 +35,7 @@ class Pilot {
     //Optional
     int _distance, int _angle;
   
-    static const int _formatDrive = 0, _formatBattery = 1;
+    static const int _formatDrive = 0, _formatData = 1;
 };
 
 
