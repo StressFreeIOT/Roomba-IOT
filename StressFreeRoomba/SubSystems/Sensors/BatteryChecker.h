@@ -27,7 +27,7 @@ class BatteryChecker {
   
     //For receiving via serial
     void serialCallback(Dataframe &data);
-    void serialDeconstructDataframe(Dataframe &data);
+    int serialDeconstructDataframe(Dataframe &data);
   
     //Communication with Roomba class
     battery_level_t batteryCheckerGetLevel();
