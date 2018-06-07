@@ -33,8 +33,7 @@ class BatteryChecker {
     battery_level_t batteryCheckerGetLevel();
   
   private:
-    battery_info_t _batteryInfo;
-  
+    volatile battery_info_t _batteryInfo;
 };
 
 #endif //ROOMBA_IOT_BATTERYCHECKER_H
