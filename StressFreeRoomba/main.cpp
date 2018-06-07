@@ -7,11 +7,29 @@ Authors
 */
 
 #include <iostream>
-#include <AppInfo.h>
+#include "AppInfo.h"
+#include "IOControl/Dataframe.h"
+#include "CommandQueue.h"
 
-int main(int argc, char *argv[]){
-  std::cout << "Firmware version: "<< APPNAME_VERSION << std::endl;
-  std::cout << "Application has started" << std::endl;
-    
-  return 0;
+Dataframe startCommand({128});
+Dataframe safeCommand({130});
+//Initialize queue...
+CommandQueue queue;
+
+void exiting() {
+    std::cout << "Exiting";
+    queue.join();
+}
+
+int main(int argc, char *argv[]) {
+    std::atexit(exiting);
+    std::cout << "Firmware version: " << APPNAME << VERSION << std::endl;
+    std::cout << "Application has started" << std::endl;
+
+    //Send Start Command
+    queue.push(startCommand);
+    //Send safe mode command
+    queue.push(safeCommand);
+
+    return 0;
 }

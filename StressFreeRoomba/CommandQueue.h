@@ -5,8 +5,30 @@
 #ifndef ROOMBA_IOT_COMMANDQUEUE_H
 #define ROOMBA_IOT_COMMANDQUEUE_H
 
+#include "IOControl/Dataframe.h"
 
-class CommandQueue {
+#include <queue>
+#include <functional>
+#include <condition_variable>
+#include <thread>
+
+using commandPair = std::pair<Dataframe, std::function<void(Dataframe)>>;
+
+class CommandQueue: public std::thread {
+private:
+    std::queue<commandPair> queue;
+    std::mutex mtx;
+    std::condition_variable cv;
+    void executeQueue();
+    bool running{true};
+public:
+    CommandQueue(){
+        thread::thread(executeQueue);
+    }
+    void push(Dataframe frame);
+    void push(Dataframe frame, std::function<void(Dataframe)> callback);
+    commandPair next();
+    void join();
 
 };
 
