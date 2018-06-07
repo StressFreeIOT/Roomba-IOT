@@ -7,7 +7,7 @@
 #include <atomic>
 
 //Mutex
-mutex mtx;
+std::mutex mtx;
 
 BatteryChecker::BatteryChecker(){
   std::cout << "BatteryChecker started" << std::endl;
